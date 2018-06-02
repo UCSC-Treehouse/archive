@@ -1,0 +1,57 @@
+{
+    "Rules": [
+        {
+            "ID": "primary/original",
+            "NoncurrentVersionTransitions": [
+                {
+                    "NoncurrentDays": 1,
+                    "StorageClass": "GLACIER"
+                }
+            ],
+            "Expiration": {
+                "ExpiredObjectDeleteMarker": true
+            },
+            "Filter": {
+                "Prefix": "primary/original/"
+            },
+            "Status": "Enabled",
+            "Transitions": [
+                {
+                    "StorageClass": "GLACIER",
+                    "Days": 90
+                }
+            ],
+            "AbortIncompleteMultipartUpload": {
+                "DaysAfterInitiation": 7
+            }
+        },
+        {
+            "ID": "primary/derived",
+            "NoncurrentVersionTransitions": [
+                {
+                    "NoncurrentDays": 1,
+                    "StorageClass": "GLACIER"
+                }
+            ],
+            "NoncurrentVersionExpiration": {
+                "NoncurrentDays": 180
+            },
+            "Expiration": {
+                "Days": 180
+            },
+            "Filter": {
+                "Prefix": "primary/derived/"
+            },
+            "Status": "Enabled",
+            "Transitions": [
+                {
+                    "StorageClass": "GLACIER",
+                    "Days": 90
+                }
+            ],
+            "AbortIncompleteMultipartUpload": {
+                "DaysAfterInitiation": 7
+            }
+        }
+    ]
+}

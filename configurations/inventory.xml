@@ -1,0 +1,29 @@
+{
+    "InventoryConfiguration": {
+        "Id": "all",
+        "Destination": {
+            "S3BucketDestination": {
+                "Encryption": {
+                    "SSES3": {}
+                },
+                "Format": "CSV",
+                "Bucket": "arn:aws:s3:::archive-treehouse-ucsc-edu",
+                "Prefix": "inventory"
+            }
+        },
+        "IncludedObjectVersions": "All",
+        "OptionalFields": [
+            "Size",
+            "LastModifiedDate",
+            "StorageClass",
+            "ETag",
+            "ReplicationStatus",
+            "IsMultipartUploaded",
+            "EncryptionStatus"
+        ],
+        "Schedule": {
+            "Frequency": "Daily"
+        },
+        "IsEnabled": true
+    }
+}
