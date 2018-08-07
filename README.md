@@ -4,3 +4,19 @@ Scripts facilitating the [Treehouse Storage Management](https://docs.google.com/
 See policy.pdf for an archived version of the policy as well as the S3 configuration files to understand how the local and S3 bucket work together to implement the policy.
 
 archive.sh should be run on a regular basis to sync the local archive up to S3 as well as generate a list of files that can be expired from the local as well as S3 bucket. Some of the files expire automatically from the S3 bucket via the life cycle policy while others much be programmatically identified (see archive.py) as the S3 life cycle policy can only be scoped to a prefix.
+
+After running there will be three lists of files in the expire/directory:
+
+* local_primary.txt: Primary original and derived files older then 90 days
+
+* local_secondary_bams.txt: Aligned bams in downstream output,primarily from RNASeq and Fusion, that are older the 90 days.
+
+* s3_secondary_bams.txt: Secondary bams in S3/Glacier older then 180 days
+
+To actually delete all the files listed in each of these outputs:
+
+```
+xargs rm < expire/local_primary.txt
+xargs rm < expire/local_secondary_bams.txt
+for f in $(cat expire/s3_secondary_bams.txt) ; do aws s3 rm "$f"; done
+```

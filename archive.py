@@ -47,6 +47,7 @@ print("S3 secondary BAMs older than 180 days:")
 print(secondary_bams.shape[0])
 print("{:.3f}\ttotal".format(secondary_bams["size"].sum() / 10**12))
 
-# Save the list of bams to a file
-secondary_bams.to_csv(os.path.join(args.output, "s3_secondary_bams.txt"),
-                      columns=["key"], index=False, header=False)
+# Save the list of s3 paths to bams to delete
+paths_to_delete = "s3://" + args.bucket + "/" + secondary_bams["key"].astype(str)
+paths_to_delete.to_csv(os.path.join(args.output, "s3_secondary_bams.txt"),
+                       index=False, header=False)
