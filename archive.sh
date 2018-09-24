@@ -21,7 +21,7 @@ echo "Total number of files backed up:"
 wc -l < expire/archived-$DATE.txt
 
 echo "Identifying S3 files to expire..."
-python archive.py --bucket $BUCKET
+python3 archive.py --bucket $BUCKET
 
 echo "Local primary files older than 90 days:"
 find $ARCHIVE/primary/* -type f -mtime +90 > expire/local_primary.txt
