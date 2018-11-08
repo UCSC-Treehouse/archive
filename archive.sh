@@ -4,8 +4,9 @@
 # and on S3 to be deleted as per the Treehouse Storage Management
 # policy. Actual deletion is a separate step for safety.
 
-ARCHIVE=/pod/pstore/groups/treehouse/archive
+ARCHIVE=/private/groups/treehouse/archive
 BUCKET=archive-treehouse-ucsc-edu
+PROFILE=treehouse
 
 DATE=`date +%Y%m%dT%H%M%S`
 echo $DATE
@@ -16,7 +17,7 @@ echo "Total local archive size:"
 du -sh $ARCHIVE 
 
 echo "Backing local archive up to s3..."
-aws s3 sync --no-follow-symlinks $ARCHIVE s3://$BUCKET/ > expire/archived-$DATE.txt
+aws --profile treehouse s3 sync --no-follow-symlinks $ARCHIVE s3://$BUCKET/ > expire/archived-$DATE.txt
 echo "Total number of files backed up:"
 wc -l < expire/archived-$DATE.txt
 

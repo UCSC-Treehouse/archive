@@ -8,21 +8,24 @@ have already been expired if a prior script is run before a new inventory
 is generated. See S3 inventory for more details.
 """
 import os
+import io
 from datetime import datetime, timedelta
 import argparse
 import pandas as pd
 import boto3
 
-
 parser = argparse.ArgumentParser(
     description="Save a list of S3 objects to expire as per Treehouse Storage Policy")
 parser.add_argument("--bucket", default="archive-treehouse-ucsc-edu",
                     help="S3 bucket")
+parser.add_argument("--profile", default="treehouse",
+                    help="S3 credentials profile name")
 parser.add_argument("--output", default="expire",
                     help="Output path for files to expire list")
 args = parser.parse_args()
 
-s3 = boto3.client('s3')
+session = boto3.Session(profile_name=args.profile)
+s3 = session.client("s3")
 
 # Download the latest S3 inventory file
 response = s3.list_objects_v2(Bucket=args.bucket,
@@ -33,7 +36,9 @@ files = [f for f in response["Contents"] if f["Size"] > 0]
 
 # Sort by date and load the latest into a dataframe
 latest = sorted(files, key=lambda obj: obj["LastModified"])[-1]["Key"]
-inventory = pd.read_csv("s3://{}/{}".format(args.bucket, latest), compression="gzip",
+
+obj = s3.get_object(Bucket=args.bucket, Key=latest)
+inventory = pd.read_csv(io.BytesIO(obj['Body'].read()), compression="gzip",
                         names=["bucket", "key", "version", "latest", "?",
                                "size", "created", "etag", "class", "??", "???", "encryption"],
                         parse_dates=["created"])

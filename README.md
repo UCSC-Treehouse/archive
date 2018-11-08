@@ -18,5 +18,5 @@ To actually delete all the files listed in each of these outputs:
 ```
 xargs rm < expire/local_primary.txt
 xargs rm < expire/local_secondary_bams.txt
-for f in $(cat expire/s3_secondary_bams.txt) ; do aws s3 rm "$f"; done
+for f in $(cat expire/s3_secondary_bams.txt) ; do aws --profile treehouse s3 rm "$f"; done
 ```
