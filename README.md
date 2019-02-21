@@ -20,3 +20,15 @@ xargs rm < expire/local_primary.txt
 xargs rm < expire/local_secondary_bams.txt
 for f in $(cat expire/s3_secondary_bams.txt) ; do aws --profile treehouse s3 rm "$f"; done
 ```
+
+## Setup gotchas
+
+- You need a `[treehouse]` profile in your `~/.aws/credentials` file with an `aws_access_key_id` and `aws_secret_access_key`
+that have the appropriate permissions to modify the treehouse bucket.
+
+- Your python3 needs to be at least 3.6 and have pandas and boto3 installed. Use a virtualenv for convenience:
+```
+virtualenv -p python3 aws_env
+source aws_env/bin/activate
+pip install pandas boto3
+```

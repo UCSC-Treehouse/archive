@@ -44,7 +44,7 @@ inventory = pd.read_csv(io.BytesIO(obj['Body'].read()), compression="gzip",
                         parse_dates=["created"])
 
 # Find secondary bams older than 180 days
-cutoff = datetime.now() - timedelta(days=180)
+cutoff = datetime.now().astimezone() - timedelta(days=180)
 secondary_bams = inventory[(inventory.created < cutoff) &
                            (inventory.key.str.contains("downstream\/.+?\.bam"))]
 
