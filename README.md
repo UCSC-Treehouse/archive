@@ -24,7 +24,7 @@ for f in $(cat expire/s3_secondary_bams.txt) ; do aws --profile treehouse s3 rm 
 The expire/ directory will additionally contain an `archived-201xxxxxTxxxxxx.txt` file labeled with the date of the run and listing what files were uploaded to S3.
 
 This file can be very large (100s of Mb) due to the "Completed ... with ... remaining" spam. To reduce to a reasonable size:
-`sed -e 's/.*upload/upload/' < $archivedFileName > $archivedFileName.small`
+`sed -e 's/.*upload: /upload: /' < $archivedFileName > $archivedFileName.small`
 
 ## Setup gotchas
 
