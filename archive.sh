@@ -17,7 +17,7 @@ echo "Total local archive size:"
 du -sh $ARCHIVE 
 
 echo "Backing local archive up to s3..."
-aws --profile treehouse s3 sync --no-follow-symlinks $ARCHIVE s3://$BUCKET/ > expire/archived-$DATE.txt
+aws --profile treehouse s3 sync --no-progress --no-follow-symlinks $ARCHIVE s3://$BUCKET/ > expire/archived-$DATE.txt
 echo "Total number of files backed up:"
 wc -l < expire/archived-$DATE.txt
 
